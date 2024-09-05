@@ -13,10 +13,7 @@
 
   <style>
     /* input을 숨깁니다 */
-    input[type="radio"] {
-      display: none;
-    }
-
+    
     /* label에 기본 스타일을 적용합니다 */
     .view-toggle label {
       cursor: pointer;
@@ -93,9 +90,133 @@
 
     .navigatebar {
       padding: 5px;
-      background-color: lightblue;
     }
   </style>
+
+  <style>
+/* 기본적으로 갤러리 뷰 */
+.grid-view .col-sm-4 {
+  display: block;
+}
+
+/* 리스트 뷰 스타일 */
+.list-view .col-sm-4 {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.list-view .card {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.list-view .card-img-top {
+  width: 150px;
+  height: auto;
+  margin-right: 20px;
+}
+
+.list-view .card-body {
+  flex-grow: 1;
+}
+  </style>
+<style>
+.card-text {
+    display: -webkit-box;       /* Required for multiline ellipsis */
+    -webkit-line-clamp: 1;      /* Ensure at least 1 line is shown */
+    -webkit-box-orient: vertical;
+    overflow: hidden;           /* Hide overflowing text */
+    text-overflow: ellipsis;    /* Show ellipsis for overflowed content */
+    min-height: 1.2em;          /* Set the minimum height to match one line of text */
+}
+</style>
+
+<style>
+/* Ensure all cards are the same height */
+.content .col-sm-4, .col-lg-3, .col-md-6 {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Optional: If using Bootstrap, you can simply add these classes */
+.card {
+    margin: 10px;
+    padding: 10px; /* Optional: internal spacing inside the card */
+    box-sizing: border-box; /* Ensures padding doesn't affect the card size */
+    width: calc(33.333% - 20px); /* Responsive width with spacing */
+}
+
+/* Fixed image size with 2:3 aspect ratio */
+.card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+.card-title {
+    min-height: 4rem; /* Ensures all titles have at least this height */
+    max-height: 4rem; /* Optional: restrict the height */
+    overflow: hidden; /* Hides overflowing content */
+    display: flex;
+    align-items: center; /* Vertically centers shorter titles */
+}
+
+/* Ensures all card content fits within the container */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.card-text {
+    display: -webkit-box;       /* Required for multiline ellipsis */
+    -webkit-line-clamp: 3;      /* Ensure at least 3 line is shown */
+    -webkit-box-orient: vertical;
+    overflow: hidden;           /* Hide overflowing text */
+    text-overflow: ellipsis;    /* Show ellipsis for overflowed content */
+    min-height: 1.2em;          /* Set the minimum height to match one line of text */
+}
+
+
+
+/* Add spacing between the two buttons */
+.btn + .btn {
+  margin-left: 10px; /* Adjust this value as needed */
+}
+
+/* Restore button colors */
+.btn-primary {
+  background-color: #007bff; /* Default Bootstrap primary button color */
+  border-color: #007bff;
+  color: white;
+}
+
+/* Remove the card footer border line */
+.card-footer.no-border {
+  border-top: none;
+  padding-top: 0; /* Adjust padding if needed */
+}
+
+/* Add equal padding between the buttons and card */
+.card-footer {
+  padding: 10px 0; /* Adjust padding to match card-body spacing */
+}
+
+input[type=radio]{
+  display : none;
+}
+
+</style>
+
 </head>
 
 <body>
@@ -160,7 +281,7 @@
     <div class="sidebar col-sm-2">
       <div class="country mb-3">
         <button class="btn btn-primary" type="submit">국내도서</button>
-        <button class="btn btn-primary" type="submit">서양도서</button>
+        <button class="btn btn-primary" type="submit">외국도서</button>
       </div>
       <div class="catalog">
         <ul class="nav flex-column">
@@ -174,7 +295,16 @@
             <a class="nav-link" href="#">자기계발</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            <a class="nav-link" href="#">인문</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">건강</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">예술</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">과학</a>
           </li>
         </ul>
       </div>
@@ -220,132 +350,153 @@
         </style>
 
         <div class="view-toggle">
-          <input type="radio" id="list-view" name="view" style="display: none" />
+          <input type="radio" id="list-view" name="view" />
           <label for="list-view" style="cursor: pointer; display: inline-block">
             <img src="https://cdn-icons-png.flaticon.com/128/151/151917.png" style="width: 20px; height: 20px" />
           </label>
-          <input type="radio" id="grid-view" name="view" checked style="display: none" />
+          <input type="radio" id="grid-view" name="view" checked  />
           <label for="grid-view" style="cursor: pointer; display: inline-block">
             <img src="https://cdn-icons-png.flaticon.com/128/7859/7859304.png" style="width: 20px; height: 20px" />
           </label>
         </div>
       </div>
 
-      <div class="content row">
+      <div class="content row" id="view-container">
         <div class="col-sm-4 col-lg-3 col-md-6">
           <div class="card" style="width: 15rem">
-            <img src="..." class="card-img-top" alt="..." />
+            <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9781501124020.jpg" class="card-img-top" alt="..." />
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
+              <h5 class="card-title">Principles - Ray Dalio</h5>
               <p class="card-text">
-                Some quick example text to build on the card title and make
-                up the bulk of the card's content.
+                Ray Dalio, one of the world’s most successful investors and entrepreneurs, shares the unconventional principles that he’s developed, refined, and used over the past forty years to create unique results in both life and business-and which any person or organization can adopt to help achieve their goals.
               </p>
-              <a href="#" class="btn btn-primary">메모</a>
-              <a href="#" class="btn btn-primary">공유</a>
+              <div class="card-footer d-flex justify-content-between no-border">
+                <a href="#" class="btn btn-primary flex-fill me-1 no-background">메모</a>
+                <a href="#" class="btn btn-primary flex-fill no-background">공유</a>
+              </div>
+          </div>
+        </div>
+      </div>
+        <div class="col-sm-4 col-lg-3 col-md-6">
+          <div class="card" style="width: 15rem">
+            <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791168473690.jpg" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <h5 class="card-title">세이노의 가르침 - 세이노</h5>
+              <p class="card-text">
+                재야의 명저 《세이노의 가르침》 2023년판 정식 출간!
+순자산 천억 원대 자산가, 세이노의 ‘요즘 생각’을 만나다
+              </p>
+              <div class="card-footer d-flex justify-content-between no-border">
+                <a href="#" class="btn btn-primary flex-fill me-1 no-background">메모</a>
+                <a href="#" class="btn btn-primary flex-fill no-background">공유</a>
             </div>
           </div>
         </div>
+      </div>
         <div class="col-sm-4 col-lg-3 col-md-6">
           <div class="card" style="width: 15rem">
-            <img src="..." class="card-img-top" alt="..." />
+            <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9780143129257.jpg" class="card-img-top" alt="..." />
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
+              <h5 class="card-title">The Artist's Way - Julia Cameron</h5>
               <p class="card-text">
-                Some quick example text to build on the card title and make
-                up the bulk of the card's content.
+                “Julia Cameron invented the way people renovate the creative soul.” - The New York Times
+Over four million copies sold!
               </p>
-              <a href="#" class="btn btn-primary">메모</a>
-              <a href="#" class="btn btn-primary">공유</a>
+              <div class="card-footer d-flex justify-content-between no-border">
+                <a href="#" class="btn btn-primary flex-fill me-1 no-background">메모</a>
+                <a href="#" class="btn btn-primary flex-fill no-background">공유</a>
             </div>
           </div>
         </div>
+      </div>
         <div class="col-sm-4 col-lg-3 col-md-6">
           <div class="card" style="width: 15rem">
-            <img src="..." class="card-img-top" alt="..." />
+            <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791188102075.jpg" class="card-img-top" alt="..." />
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
+              <h5 class="card-title">슈퍼 휴먼 - 데이브 아스프리</h5>
               <p class="card-text">
-                Some quick example text to build on the card title and make
-                up the bulk of the card's content.
+                뉴욕 타임스 베스트셀러 등극
+                전 세계 바이오해커들이 열광하는 방탄커피 창시자
+                실리콘밸리 괴짜 CEO 데이브 아스프리가 전하는
+                노화를 되돌리고 어쩌면 죽지 않을 최강의 프로젝트!   
               </p>
-              <a href="#" class="btn btn-primary">메모</a>
-              <a href="#" class="btn btn-primary">공유</a>
+              <div class="card-footer d-flex justify-content-between no-border">
+              <a href="#" class="btn btn-primary flex-fill me-1 no-background">메모</a>
+              <a href="#" class="btn btn-primary flex-fill no-background">공유</a>
             </div>
           </div>
         </div>
+      </div>
         <div class="col-sm-4 col-lg-3 col-md-6">
           <div class="card" style="width: 15rem">
-            <img src="..." class="card-img-top" alt="..." />
+            <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791194280064.jpg" class="card-img-top" alt="..." />
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
+              <h5 class="card-title">인간관계론 - 데일 카네기</h5>
               <p class="card-text">
-                Some quick example text to build on the card title and make
-                up the bulk of the card's content.
+                진정한 행복과 성공을 얻을 수 있는 인간관계의 핵심!
+                이 책은 1939년 처음으로 집필되었다. 이후 나온 수많은 자기 계발서들이 이 책의 영향을 받았다고 해도 과언이 아니다. 세계적인 투자가 워런 버핏의 인생을 바꾼 책이자, 〈타임〉 선정 20세기 최고의 책으로서 누구나 읽어야 하는 필독서다. 독자들은 90여 년이라는 변화의 흐름 속에서도 입지를 굳혀 가는 인간관계를 단순한 원칙을 통해 쉽게 이해할 수 있다.
               </p>
-              <a href="#" class="btn btn-primary">메모</a>
-              <a href="#" class="btn btn-primary">공유</a>
+              <div class="card-footer d-flex justify-content-between no-border">
+              <a href="#" class="btn btn-primary flex-fill me-1 no-background">메모</a>
+              <a href="#" class="btn btn-primary flex-fill no-background">공유</a>
             </div>
           </div>
         </div>
+      </div>
         <div class="col-sm-4 col-lg-3 col-md-6">
           <div class="card" style="width: 15rem">
-            <img src="..." class="card-img-top" alt="..." />
+            <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791162541029.jpg" class="card-img-top" alt="..." />
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
+              <h5 class="card-title">뇌, 욕망의 비밀을 풀다 - 한스 & 게오르크 호애젤</h5>
               <p class="card-text">
-                Some quick example text to build on the card title and make
-                up the bulk of the card's content.
+                인간의 뇌 속에 숨겨진 구매욕망에 답이 있다!
+많은 기업이 빅데이터를 활용해 마케팅을 하고 있지만, 인간의 뇌 속에 숨겨진 구매동기와 소비욕망의 본질을 파악하지 못한다면 제아무리 뛰어난 제품이라도 시장에서 성공하기 어렵다. 신경마케팅 분야의 최고 권위자이자 세계적인 기업들의 마케팅 및 브랜딩 자문을 맡고 있는 한스-게오르크 호이젤 박사는 『뇌, 욕망의 비밀을 풀다』에서 인간의 뇌 속을 들여다보는 새로운 방법을 이용해 매출을 획기적으로 개선할 수 있는 효과적인 방법을 제시한다.
               </p>
-              <a href="#" class="btn btn-primary">메모</a>
-              <a href="#" class="btn btn-primary">공유</a>
+              <div class="card-footer d-flex justify-content-between no-border">
+              <a href="#" class="btn btn-primary flex-fill me-1 no-background">메모</a>
+              <a href="#" class="btn btn-primary flex-fill no-background">공유</a>
             </div>
           </div>
         </div>
+      </div>
         <div class="col-sm-4 col-lg-3 col-md-6">
           <div class="card" style="width: 15rem">
-            <img src="..." class="card-img-top" alt="..." />
+            <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788937834790.jpg" class="card-img-top" alt="..." />
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
+              <h5 class="card-title">정의한 무엇인가 - 마이클 샌델</h5>
               <p class="card-text">
-                Some quick example text to build on the card title and
-                make up the bulk of the card's content.
+                “대한민국에 정의 열풍을 몰고 온 시대의 화제작!”
+                하버드 최고의 명강의를 책으로 만나다!
+                세계적인 석학 마이클 샌델의 정치철학 명강의를 모은 《정의란 무엇인가》는 한국에서만 누적 판매 200만 부를 자랑하는 초대형 베스트셀러다. 실제로 대학에서 진행한 강의답게 이 책은 샌델이 자기의 주장이나 가치관을 펼치기보다는 정치 철학자들이 남긴 시대를 초월한 철학적인 질문들, 공리주의와 자유주의, 공동체주의에 대한 핵심적인 이론들을 다양한 사례를 들어 알기 쉽게 소개하고 있다.
               </p>
-              <a href="#" class="btn btn-primary">메모</a>
-              <a href="#" class="btn btn-primary">공유</a>
+              <div class="card-footer d-flex justify-content-between no-border">
+              <a href="#" class="btn btn-primary flex-fill me-1 no-background">메모</a>
+              <a href="#" class="btn btn-primary flex-fill no-background">공유</a>
             </div>
           </div>
         </div>
+      </div>
         <div class="col-sm-4 col-lg-3 col-md-6">
           <div class="card" style="width: 15rem">
-            <img src="..." class="card-img-top" alt="..." />
+            <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788901268354.jpg" class="card-img-top" alt="..." />
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
+              <h5 class="card-title">마음 가면 - 브레네 브라운</h5>
               <p class="card-text">
-                Some quick example text to build on the card title and
-                make up the bulk of the card's content.
+                ★ 전 세계 200만 부 판매 돌파
+                ★ 아마존 ‘대인관계’ 분야 10년 연속 베스트셀러
+                ★ ‘취약성’ 연구 최고 권위자, 브레네 브라운의 대표작 
+                “있는 그대로의 나를 보여주는 용기는 인생을 어떻게 변화시키는가”
+                수치심, 불안, 강박에 맞서는 용기의 심리학
               </p>
-              <a href="#" class="btn btn-primary">메모</a>
-              <a href="#" class="btn btn-primary">공유</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-4 col-lg-3 col-md-6">
-          <div class="card" style="width: 15rem">
-            <img src="..." class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                Some quick example text to build on the card title and
-                make up the bulk of the card's content.
-              </p>
-              <a href="#" class="btn btn-primary">메모</a>
-              <a href="#" class="btn btn-primary">공유</a>
+              <div class="card-footer d-flex justify-content-between no-border">
+              <a href="#" class="btn btn-primary flex-fill me-1 no-background">메모</a>
+              <a href="#" class="btn btn-primary flex-fill no-background">공유</a>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
     <div>
       <!-- Top 버튼 -->
       <button onclick="topFunction()" id="topBtn" title="Go to top">
@@ -357,6 +508,7 @@
   </div>
 
   <footer></footer>
+  <script src="./index.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
